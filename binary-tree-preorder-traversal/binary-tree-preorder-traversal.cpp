@@ -11,6 +11,72 @@
  */
 class Solution {
 public:
+    // iterative solution
+    bool allChildrenHaveBeenVisited( TreeNode* node, std::set<TreeNode*> const& visited )
+    {
+        auto const leftHasBeenVisited { (node->left == nullptr) || 
+                                        (visited.find( node->left ) != visited.end()) };
+        
+        auto const rightHasBeenVisited { (node->right == nullptr) || 
+                                         (visited.find( node->right ) != visited.end()) };
+        
+        return leftHasBeenVisited && rightHasBeenVisited;
+    }
+    
+    bool isLeaf( TreeNode* node )
+    {
+        if( (node->left == nullptr) && (node->right == nullptr) )
+        {
+            return true;
+        }
+        
+        return false;
+    }
+    
+    vector<int> preorderTraversal(TreeNode* root) {
+        std::vector<int>      traversal      {};
+        std::set<TreeNode*>   visited        {};
+        std::stack<TreeNode*> traversalStack {};
+        
+        if( root == nullptr )
+        {
+            return traversal;
+        }
+        
+        traversal.push_back( root->val );
+        visited.insert( root );
+        traversalStack.push( root );
+        
+        while( !traversalStack.empty() )
+        {
+            auto currNode { traversalStack.top() };
+            
+            if( isLeaf( currNode ) )
+            {
+                traversalStack.pop();
+            }
+            else if( allChildrenHaveBeenVisited( currNode, visited ) )
+            {
+                traversalStack.pop();
+            }
+            else if( (currNode->left != nullptr) && (visited.find( currNode->left ) == visited.end()) )
+            {
+                traversal.push_back( currNode->left->val );
+                traversalStack.push( currNode->left );
+                visited.insert( currNode->left );
+            }
+            else if( (currNode->right != nullptr) && (visited.find( currNode->right ) == visited.end()) )
+            {
+                traversal.push_back( currNode->right->val );
+                traversalStack.push( currNode->right );
+                visited.insert( currNode->right );
+            }
+        }
+        
+        return traversal;
+    }
+    
+    /*
     // recursive solution
     void preOrder( TreeNode* node, std::vector<int>& traversal )
     {
@@ -44,4 +110,5 @@ public:
         
         return traversal;
     }
+    */
 };
