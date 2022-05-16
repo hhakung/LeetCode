@@ -11,7 +11,7 @@
  */
 class Solution {
 public:
-    // iterative solution
+    // Option 1: Iterative solution
     bool allChildrenHaveBeenVisited( TreeNode* node, std::set<TreeNode*> const& visited )
     {
         auto const leftHasBeenVisited { (node->left == nullptr) || 
@@ -76,8 +76,9 @@ public:
         return traversal;
     }
     
+    
     /*
-    // recursive solution
+    // Option 2: Recursive solution
     void preOrder( TreeNode* node, std::vector<int>& traversal )
     {
         // put in the current node
